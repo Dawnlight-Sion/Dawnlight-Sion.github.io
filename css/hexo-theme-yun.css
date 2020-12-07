@@ -133,7 +133,7 @@ body::before {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-image: url("/Dawn_Light/62258h773p0.webp");
+  background-image: url("/images/62258h773p0.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1943,7 +1943,7 @@ pre[class*='language-']:hover .copy-btn {
     color: var(--hty-text-color);
   }
   :root:not([data-user-color-scheme]) body::before {
-    background-image: url("/Dawn_Light/76735043_p0.png");
+    background-image: url("/images/76735043_p0.png");
   }
   :root:not([data-user-color-scheme]) .char {
     background-color: rgba(0,0,0,0.5);
@@ -2019,7 +2019,7 @@ pre[class*='language-']:hover .copy-btn {
   color: var(--hty-text-color);
 }
 [data-user-color-scheme='dark'] body::before {
-  background-image: url("/Dawn_Light/76735043_p0.png");
+  background-image: url("/images/76735043_p0.png");
 }
 [data-user-color-scheme='dark'] .char {
   background-color: rgba(0,0,0,0.5);
