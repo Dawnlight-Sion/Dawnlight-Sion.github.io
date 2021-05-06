@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="诗音"><meta name="copyright" content="诗音"><meta name="generator" content="Hexo 5.2.0"><meta name="theme" content="hexo-theme-yun"><title>蓝桥杯题解-错误票据-输入接收/优先队列 | 晨曦辉月</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.22/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link rel="shortcut icon" type="image/svg+xml" href="/magic_32px.ico"><link rel="mask-icon" href="/magic_32px.ico" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://gitee.com" crossorigin><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"dawn_light.gitee.io","root":"/","title":"晨曦辉月","version":"1.3.0","mode":"auto","copycode":true,"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><meta name="description" content="问题描述 某涉密单位下发了某种票据，并要在年终全部收回。 每张票据有唯一的ID号。全年所有票据的ID号是连续的，但ID的开始数码是随机选定的。 因为工作人员疏忽，在录入ID号的时候发生了一处错误，造成了某个ID断号，另外一个ID重号。 你的任务是通过编程，找出断号的ID和重号的ID。 假设断号不可能发生在最大和最小号。 输入格式 要求程序首先输入一个整数N(N&lt;100)表示后面数据行数。 接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="蓝桥杯题解-错误票据-输入接收&#x2F;优先队列">
+<meta property="og:url" content="https://dawn_light.gitee.io/2021/05/06/%E8%93%9D%E6%A1%A5%E6%9D%AF%E9%A2%98%E8%A7%A3-%E9%94%99%E8%AF%AF%E7%A5%A8%E6%8D%AE-%E8%BE%93%E5%85%A5%E6%8E%A5%E6%94%B6-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/index.html">
+<meta property="og:site_name" content="晨曦辉月">
+<meta property="og:description" content="问题描述 某涉密单位下发了某种票据，并要在年终全部收回。 每张票据有唯一的ID号。全年所有票据的ID号是连续的，但ID的开始数码是随机选定的。 因为工作人员疏忽，在录入ID号的时候发生了一处错误，造成了某个ID断号，另外一个ID重号。 你的任务是通过编程，找出断号的ID和重号的ID。 假设断号不可能发生在最大和最小号。 输入格式 要求程序首先输入一个整数N(N&lt;100)表示后面数据行数。 接">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-06T00:59:53.000Z">
+<meta property="article:modified_time" content="2021-05-06T01:04:33.744Z">
+<meta property="article:author" content="诗音">
+<meta property="article:tag" content="C++竞赛题解">
+<meta name="twitter:card" content="summary"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button sidebar-nav-active" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel sidebar-panel-active" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="诗音"><img width="96" loading="lazy" src="/avatar.jpg" alt="诗音"></a><div class="site-author-name"><a href="/about/">诗音</a></div><a class="site-name" href="/about/site.html">晨曦辉月</a><sub class="site-subtitle"></sub><div class="site-desciption">真理永恒</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">24</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">0</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">6</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/Eden-sion-prime" title="GitHub" target="_blank" style="color:#6e5494"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/sion-Eternal-Fantasy" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/17832810" title="哔哩哔哩" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content">此文章未包含目录</div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://dawn_light.gitee.io/2021/05/06/%E8%93%9D%E6%A1%A5%E6%9D%AF%E9%A2%98%E8%A7%A3-%E9%94%99%E8%AF%AF%E7%A5%A8%E6%8D%AE-%E8%BE%93%E5%85%A5%E6%8E%A5%E6%94%B6-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="诗音"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="晨曦辉月"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">蓝桥杯题解-错误票据-输入接收/优先队列</h1><div class="post-meta"><div class="post-time" style="display:inline-block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2021-05-06 08:59:53" itemprop="dateCreated datePublished" datetime="2021-05-06T08:59:53+08:00">2021-05-06</time></div><div class="post-classify"><span class="post-tag"><a class="tag" href="/tags/C-%E7%AB%9E%E8%B5%9B%E9%A2%98%E8%A7%A3/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">C++竞赛题解</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><p>问题描述</p>
+<p>某涉密单位下发了某种票据，并要在年终全部收回。</p>
+<p>每张票据有唯一的ID号。全年所有票据的ID号是连续的，但ID的开始数码是随机选定的。</p>
+<p>因为工作人员疏忽，在录入ID号的时候发生了一处错误，造成了某个ID断号，另外一个ID重号。</p>
+<p>你的任务是通过编程，找出断号的ID和重号的ID。</p>
+<p>假设断号不可能发生在最大和最小号。</p>
+<p>输入格式</p>
+<p>要求程序首先输入一个整数N(N&lt;100)表示后面数据行数。</p>
+<p>接着读入N行数据。</p>
+<p>每行数据长度不等，是用空格分开的若干个（不大于100个）正整数（不大于100000），请注意行内和行末可能有多余的空格，你的程序需要能处理这些空格。</p>
+<p>每个整数代表一个ID号。</p>
+<p>输出格式</p>
+<p>要求程序输出1行，含两个整数m n，用空格分隔。</p>
+<p>其中，m表示断号ID，n表示重号ID</p>
+<p>样例输入1</p>
+<p>2<br>5 6 8 11 9<br>10 12 9</p>
+<p>样例输出1</p>
+<p>7 9</p>
+<p>样例输入2</p>
+<p>6<br>164 178 108 109 180 155 141 159 104 182 179 118 137 184 115 124 125 129 168 196<br>172 189 127 107 112 192 103 131 133 169 158<br>128 102 110 148 139 157 140 195 197<br>185 152 135 106 123 173 122 136 174 191 145 116 151 143 175 120 161 134 162 190<br>149 138 142 146 199 126 165 156 153 193 144 166 170 121 171 132 101 194 187 188<br>113 130 176 154 177 120 117 150 114 183 186 181 100 163 160 167 147 198 111 119</p>
+<p>样例输出2</p>
+<p>105 120</p>
+<ul>
+<li><p>问题分析：</p>
+</li>
+<li><p>接收不定长数据的输入判断</p>
+</li>
+<li><p>可用优先队列来存放数据</p>
+</li>
+<li><p>输入数据：</p>
+</li>
+<li><p>while(cin&gt;&gt;a)可判断有没有到结尾</p>
+</li>
+<li><p>cin的返回值问题：</p>
+</li>
+<li><p>cin是C++的标准输入流，其本身是一个对象，并不存在返回值的概念。<br>不过经常会有类似于<br>while(cin&gt;&gt;a)<br>的调用，这里并不是cin的返回值，而是&gt;&gt;操作重载函数<br>istream&amp; operator&gt;&gt;(istream&amp;, T &amp;);的返回值，其中第二个参数由cin&gt;&gt;后续参数类型决定。<br>其返回值类型为istream&amp;类型，大多数情况下其返回值为cin本身（非0值），只有当遇到EOF输入时，返回值为0。<br>输入EOF的方法，windows下输入ctrl+z, Linux下输入ctrl+d。<br>于是，当输入所有数据后，通过输入EOF的方法，可以退出while(cin&gt;&gt;a)这样的循环。</p>
+</li>
+<li><p>利用cin.get()可以获得回车和换行符，判断是第几个回车就能完成数据的接收了。</p>
+</li>
+<li><p>代码：</p>
+</li>
+<li><pre><code class="c++">#include&lt;iostream&gt;
+#include&lt;queue&gt;
+#include&lt;vector&gt;
+using namespace std;
+
+int main()&#123;
+    priority_queue &lt;int,vector&lt;int&gt;,greater&lt;int&gt; &gt;num;
+    int n,a;
+    int count = 0;
+    int rs1,rs2;
+    scanf(&quot;%d&quot;,&amp;n);
+    getchar();
+
+    while(cin&gt;&gt;a)&#123;
+        char c=cin.get();
+        if(c == &#39;\n&#39;) count++;
+        num.push(a);
+        if(count == n) break;
+    &#125;
+
+    while(!num.empty())&#123;
+        int n1 = num.top();
+        num.pop();
+        if(!num.empty())&#123;
+            int n2 = num.top();
+            if(n2-n1 &gt; 1 || n1-n2 &gt; 1) rs1=n2-1;
+            if(n1==n2) rs2=n2;
+        &#125;
+    &#125;
+        printf(&quot;%d %d\n&quot;,rs1,rs2);
+    return 0;
+&#125;</code></pre>
+</li>
+</ul>
+</div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>诗音</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://dawn_light.gitee.io/2021/05/06/%E8%93%9D%E6%A1%A5%E6%9D%AF%E9%A2%98%E8%A7%A3-%E9%94%99%E8%AF%AF%E7%A5%A8%E6%8D%AE-%E8%BE%93%E5%85%A5%E6%8E%A5%E6%94%B6-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/" title="蓝桥杯题解-错误票据-输入接收/优先队列">https://dawn_light.gitee.io/2021/05/06/%E8%93%9D%E6%A1%A5%E6%9D%AF%E9%A2%98%E8%A7%A3-%E9%94%99%E8%AF%AF%E7%A5%A8%E6%8D%AE-%E8%BE%93%E5%85%A5%E6%8E%A5%E6%94%B6-%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2021/04/01/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E8%BD%AC%E5%85%AB%E8%BF%9B%E5%88%B6string%E7%B1%BB%E5%9E%8B/" rel="next" title="十六进制转八进制string类型"><span class="post-nav-text">十六进制转八进制string类型</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div id="comment"><div class="comment-tooltip text-center"><span>点击按钮跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/Sion/https://github.com/Eden-sion-prime/issues?q=is:issue+蓝桥杯题解-错误票据-输入接收/优先队列">GitHub Issues</a></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2019 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-lines"></use></svg></span><span class="author"> 诗音</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v5.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.3.0</span></div><div class="live_time"><span>以密斯特拉之名，魔法降临于此</span><span id="display_live_time"></span><script>function blog_live_time() {
+  window.setTimeout(blog_live_time, 1000);
+  const start = new Date('2020-12-06T22:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div><script defer src="/js/utils.js"></script><script defer src="/js/hexo-theme-yun.js"></script></body></html>
